@@ -1,4 +1,4 @@
-name: Test and Publish to NPM
+name: Release Published
 
 on:
   release:
