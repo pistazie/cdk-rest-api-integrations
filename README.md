@@ -1,4 +1,5 @@
 ![Test](https://github.com/pistazie/cdk-rest-api-integrations/workflows/Test/badge.svg)
+[![npm version](https://badge.fury.io/js/cdk-rest-api-integrations.svg)](https://badge.fury.io/js/cdk-rest-api-integrations)
 
 # Aws CDK RestApi ↔️ Aws Service integration constructs
 
