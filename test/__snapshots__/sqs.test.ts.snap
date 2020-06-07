@@ -1,0 +1,263 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot test: SQS integration as expected 1`] = `
+Object {
+  "Outputs": Object {
+    "testRestApiEndpointA2F50208": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "https://",
+            Object {
+              "Ref": "testRestApi5A6FA7A3",
+            },
+            ".execute-api.",
+            Object {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            Object {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            Object {
+              "Ref": "testRestApiDeploymentStageprod5AB21DDE",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
+  "Resources": Object {
+    "testIntegrationtestIntegrationsqsintegrationrole0DE553F7": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testIntegrationtestIntegrationsqsintegrationroleDefaultPolicy7FDFFE19": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testQueue601B0FCD",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testIntegrationtestIntegrationsqsintegrationroleDefaultPolicy7FDFFE19",
+        "Roles": Array [
+          Object {
+            "Ref": "testIntegrationtestIntegrationsqsintegrationrole0DE553F7",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testQueue601B0FCD": Object {
+      "Type": "AWS::SQS::Queue",
+    },
+    "testRestApi5A6FA7A3": Object {
+      "Properties": Object {
+        "Name": "testRestApi",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "testRestApiAccount78640F48": Object {
+      "DependsOn": Array [
+        "testRestApi5A6FA7A3",
+      ],
+      "Properties": Object {
+        "CloudWatchRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "testRestApiCloudWatchRole995562DC",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+    },
+    "testRestApiCloudWatchRole995562DC": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testRestApiDeployment1ED9BE2Efbabdf2a52750bf0bdd0e1d0d8b03015": Object {
+      "DependsOn": Array [
+        "testRestApitestResourcePOST4F369133",
+        "testRestApitestResourceD4EBD8FD",
+      ],
+      "Properties": Object {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": Object {
+          "Ref": "testRestApi5A6FA7A3",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "testRestApiDeploymentStageprod5AB21DDE": Object {
+      "Properties": Object {
+        "DeploymentId": Object {
+          "Ref": "testRestApiDeployment1ED9BE2Efbabdf2a52750bf0bdd0e1d0d8b03015",
+        },
+        "RestApiId": Object {
+          "Ref": "testRestApi5A6FA7A3",
+        },
+        "StageName": "prod",
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "testRestApitestResourceD4EBD8FD": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "testRestApi5A6FA7A3",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "testResource",
+        "RestApiId": Object {
+          "Ref": "testRestApi5A6FA7A3",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "testRestApitestResourcePOST4F369133": Object {
+      "Properties": Object {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "POST",
+        "Integration": Object {
+          "Credentials": Object {
+            "Fn::GetAtt": Array [
+              "testIntegrationtestIntegrationsqsintegrationrole0DE553F7",
+              "Arn",
+            ],
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": Array [
+            Object {
+              "ResponseTemplates": Object {
+                "application/json": "{\\"status\\":\\"failed to process message\\")}",
+              },
+              "SelectionPattern": "",
+              "StatusCode": "503",
+            },
+            Object {
+              "ResponseTemplates": Object {
+                "application/json": "{\\"status\\":\\"message received\\", \\"messageId\\": $input.json('SendMessageResponse.SendMessageResult.MessageId')}",
+              },
+              "SelectionPattern": "200",
+              "StatusCode": "200",
+            },
+          ],
+          "PassthroughBehavior": "NEVER",
+          "RequestParameters": Object {
+            "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'",
+          },
+          "RequestTemplates": Object {
+            "application/json": "Action=SendMessage&MessageBody=$util.urlEncode(\\"$input.body\\")",
+          },
+          "Type": "AWS",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":sqs:path/",
+                Object {
+                  "Ref": "AWS::AccountId",
+                },
+                "/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "testQueue601B0FCD",
+                    "QueueName",
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "MethodResponses": Array [
+          Object {
+            "ResponseModels": Object {
+              "application/json": "Empty",
+            },
+            "StatusCode": "503",
+          },
+          Object {
+            "ResponseModels": Object {
+              "application/json": "Empty",
+            },
+            "StatusCode": "200",
+          },
+        ],
+        "ResourceId": Object {
+          "Ref": "testRestApitestResourceD4EBD8FD",
+        },
+        "RestApiId": Object {
+          "Ref": "testRestApi5A6FA7A3",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+  },
+}
+`;

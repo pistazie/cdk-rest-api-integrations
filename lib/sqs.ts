@@ -1,0 +1,33 @@
+import * as sqs from '@aws-cdk/aws-sqs';
+import * as cdk from '@aws-cdk/core';
+import {GenericRestApiAwsIntegration, GenericRestApiAwsIntegrationProps} from "./generic-rest-api-aws-integration"
+
+/**
+ * Integrates an SQS Queue with ApiGateway (RestApi) by publishing Queue messages on http request
+ */
+export interface SqsApiAwsIntegrationProps extends GenericRestApiAwsIntegrationProps {
+    /**
+     * The target SQS Queue to which messages will be sent by the RestApi Integration
+     */
+    queue: sqs.IQueue;
+}
+
+export class SqsApiAwsIntegration extends GenericRestApiAwsIntegration {
+
+    constructor(scope: cdk.Construct, id: string, props: SqsApiAwsIntegrationProps) {
+        super(scope, id, props);
+    }
+
+    init(id: string, props: SqsApiAwsIntegrationProps) : void {
+
+        this.requestTemplates["application/json"] = "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")"
+        this.successResponseTemplates["application/json"] = "{\"status\":\"message received\", \"messageId\": $input.json('SendMessageResponse.SendMessageResult.MessageId')}"
+        this.failureResponseTemplates["application/json"] = "{\"status\":\"failed to process message\")}"
+        this.integrationPath = cdk.Aws.ACCOUNT_ID + "/" + props.queue.queueName
+        this.awsService = "sqs"
+    }
+
+    configureAwsService(id: string, props: SqsApiAwsIntegrationProps) : void {
+        props.queue.grantSendMessages(this.integrationRole)
+    }
+}
