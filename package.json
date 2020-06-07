@@ -1,7 +1,7 @@
 {
   "name": "cdk-rest-api-integrations",
   "description": "This CDK constructs library integrates AWS RestApi (a.k.a ApiGateway) with other AWS Services",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "keywords": [
     "cdk",
     "apigateway",

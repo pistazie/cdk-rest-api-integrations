@@ -1,3 +1,5 @@
+![Test](https://github.com/pistazie/cdk-rest-api-integrations/workflows/Test/badge.svg)
+
 # Aws CDK RestApi ↔️ Aws Service integration constructs
 
 This CDK constructs library integrates AWS RestApi (a.k.a ApiGateway) with other AWS Services directly without the need for a lambda function.
