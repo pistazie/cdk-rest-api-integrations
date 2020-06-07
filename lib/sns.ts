@@ -5,20 +5,20 @@ import {GenericRestApiAwsIntegration, GenericRestApiAwsIntegrationProps} from ".
 /**
  * Integrates an SNS Topic with ApiGateway(RestApi) by publishing Topic messages on http request
  */
-export interface SnsApiAwsIntegrationProps extends GenericRestApiAwsIntegrationProps {
+export interface SnsRestApiIntegrationProps extends GenericRestApiAwsIntegrationProps {
     /**
      * The target SNS Topic to which messages will be published by the RestApi Integration
      */
     topic: sns.Topic;
 }
 
-export class SnsApiAwsIntegration extends GenericRestApiAwsIntegration {
+export class SnsRestApiIntegration extends GenericRestApiAwsIntegration {
 
-    constructor(scope: cdk.Construct, id: string, props: SnsApiAwsIntegrationProps) {
+    constructor(scope: cdk.Construct, id: string, props: SnsRestApiIntegrationProps) {
         super(scope, id, props);
     }
 
-    init(id: string, props: SnsApiAwsIntegrationProps) : void {
+    init(id: string, props: SnsRestApiIntegrationProps) : void {
         this.requestTemplates["application/json"] = "Action=Publish&TopicArn=$util.urlEncode('" + props.topic.topicArn + "')&Message=$util.urlEncode($input.body)"
         this.successResponseTemplates["application/json"] = "{\"status\":\"message received\", \"messageId\": $input.json('PublishResponse.PublishResult.MessageId')}"
         this.failureResponseTemplates["application/json"] = "{\"status\":\"failed to process message\")}"
@@ -26,7 +26,7 @@ export class SnsApiAwsIntegration extends GenericRestApiAwsIntegration {
         this.awsService = "sns"
     }
 
-    configureAwsService(id: string, props: SnsApiAwsIntegrationProps): void {
+    configureAwsService(id: string, props: SnsRestApiIntegrationProps): void {
         props.topic.grantPublish(this.integrationRole)
     }
 }

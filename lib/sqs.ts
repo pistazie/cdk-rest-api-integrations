@@ -5,20 +5,20 @@ import {GenericRestApiAwsIntegration, GenericRestApiAwsIntegrationProps} from ".
 /**
  * Integrates an SQS Queue with ApiGateway (RestApi) by publishing Queue messages on http request
  */
-export interface SqsApiAwsIntegrationProps extends GenericRestApiAwsIntegrationProps {
+export interface SqsRestApiIntegrationProps extends GenericRestApiAwsIntegrationProps {
     /**
      * The target SQS Queue to which messages will be sent by the RestApi Integration
      */
     queue: sqs.IQueue;
 }
 
-export class SqsApiAwsIntegration extends GenericRestApiAwsIntegration {
+export class SqsRestApiIntegration extends GenericRestApiAwsIntegration {
 
-    constructor(scope: cdk.Construct, id: string, props: SqsApiAwsIntegrationProps) {
+    constructor(scope: cdk.Construct, id: string, props: SqsRestApiIntegrationProps) {
         super(scope, id, props);
     }
 
-    init(id: string, props: SqsApiAwsIntegrationProps) : void {
+    init(id: string, props: SqsRestApiIntegrationProps) : void {
 
         this.requestTemplates["application/json"] = "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")"
         this.successResponseTemplates["application/json"] = "{\"status\":\"message received\", \"messageId\": $input.json('SendMessageResponse.SendMessageResult.MessageId')}"
@@ -27,7 +27,7 @@ export class SqsApiAwsIntegration extends GenericRestApiAwsIntegration {
         this.awsService = "sqs"
     }
 
-    configureAwsService(id: string, props: SqsApiAwsIntegrationProps) : void {
+    configureAwsService(id: string, props: SqsRestApiIntegrationProps) : void {
         props.queue.grantSendMessages(this.integrationRole)
     }
 }

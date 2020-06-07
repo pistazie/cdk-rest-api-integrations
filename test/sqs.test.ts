@@ -3,13 +3,13 @@ import * as apigateway from '@aws-cdk/aws-apigateway';
 import * as sqs from '@aws-cdk/aws-sqs';
 
 import {SynthUtils} from '@aws-cdk/assert';
-import {SqsApiAwsIntegration} from "../lib/sqs"
+import {SqsRestApiIntegration} from "../lib/sqs"
 
 test('snapshot test: SQS integration as expected', () => {
 
     const {stack, queue, restApiResource} = givenStackRestApiResourceAndQueue()
 
-    new SqsApiAwsIntegration(stack, 'testIntegration', {
+    new SqsRestApiIntegration(stack, 'testIntegration', {
         restApiResource: restApiResource,
         queue: queue
     })

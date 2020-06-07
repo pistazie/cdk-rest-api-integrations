@@ -3,13 +3,13 @@ import * as apigateway from '@aws-cdk/aws-apigateway';
 import * as sns from '@aws-cdk/aws-sns';
 
 import {SynthUtils} from '@aws-cdk/assert';
-import {SnsApiAwsIntegration} from "../lib/sns"
+import {SnsRestApiIntegration} from "../lib/sns"
 
 test('snapshot test: SNS integration as expected', () => {
 
     const {stack, topic, restApiResource} = givenStackRestApiResourceAndTopic()
 
-    new SnsApiAwsIntegration(stack, 'testIntegration', {
+    new SnsRestApiIntegration(stack, 'testIntegration', {
         restApiResource: restApiResource,
         topic: topic
     })
