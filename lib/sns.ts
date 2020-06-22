@@ -10,6 +10,16 @@ export interface SnsRestApiIntegrationProps extends GenericRestApiAwsIntegration
      * The target SNS Topic to which messages will be published by the RestApi Integration
      */
     topic: sns.Topic;
+
+    /**
+     *  Integration request mapping templates
+     *
+     *  reference: https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html
+     *
+     *  @default {"application/json": "Action=Publish&TopicArn=$util.urlEncode('" + props.topic.topicArn + "')&Message=$util.urlEncode($input.body)"}
+     */
+    requestTemplates?: { [contentType: string]: string; };
+
 }
 
 export class SnsRestApiIntegration extends GenericRestApiAwsIntegration {
@@ -19,7 +29,8 @@ export class SnsRestApiIntegration extends GenericRestApiAwsIntegration {
     }
 
     init(id: string, props: SnsRestApiIntegrationProps) : void {
-        this.requestTemplates["application/json"] = "Action=Publish&TopicArn=$util.urlEncode('" + props.topic.topicArn + "')&Message=$util.urlEncode($input.body)"
+        this.requestTemplates = props.requestTemplates
+            || {"application/json": "Action=Publish&TopicArn=$util.urlEncode('" + props.topic.topicArn + "')&Message=$util.urlEncode($input.body)"}
         this.successResponseTemplates["application/json"] = "{\"status\":\"message received\", \"messageId\": $input.json('PublishResponse.PublishResult.MessageId')}"
         this.failureResponseTemplates["application/json"] = "{\"status\":\"failed to process message\")}"
         this.integrationPath="/"

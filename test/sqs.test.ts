@@ -2,8 +2,9 @@ import * as cdk from '@aws-cdk/core';
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import * as sqs from '@aws-cdk/aws-sqs';
 
-import {SynthUtils} from '@aws-cdk/assert';
+import {haveResourceLike, SynthUtils} from '@aws-cdk/assert';
 import {SqsRestApiIntegration} from "../lib/sqs"
+import {expect as expectCDK} from "@aws-cdk/assert/lib/expect"
 
 test('snapshot test: SQS integration as expected', () => {
 
@@ -15,6 +16,23 @@ test('snapshot test: SQS integration as expected', () => {
     })
 
     expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('sqs  it respects custom request templates properties', () => {
+
+    const {stack, queue, restApiResource} = givenStackRestApiResourceAndQueue()
+
+    new SqsRestApiIntegration(stack, 'testIntegration', {
+        restApiResource: restApiResource,
+        queue: queue,
+        requestTemplates: {
+            "application/leet": "Message=$util.urlEncode($input.body)"
+        }
+    })
+
+    expectCDK(stack).to(haveResourceLike("AWS::ApiGateway::Method", {
+        "Integration": {"RequestTemplates": { "application/leet": "Message=$util.urlEncode($input.body)"}}
+    }))
 });
 
 function givenStackRestApiResourceAndQueue() {

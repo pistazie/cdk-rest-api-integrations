@@ -31,7 +31,7 @@ export abstract class GenericRestApiAwsIntegration extends cdk.Construct {
   protected abstract configureAwsService(id:string, props: GenericRestApiAwsIntegrationProps) : void;
   protected abstract init(id:string, props: GenericRestApiAwsIntegrationProps) : void;
 
-  // configured in init method
+  // configured in init method of each implementation
   protected awsService: string
   protected integrationHttpVerb = 'POST'
   protected integrationPath = "/"
