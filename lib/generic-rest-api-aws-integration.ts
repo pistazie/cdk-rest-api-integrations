@@ -34,7 +34,8 @@ export abstract class GenericRestApiAwsIntegration extends cdk.Construct {
   // configured in init method of each implementation
   protected awsService: string
   protected integrationHttpVerb = 'POST'
-  protected integrationPath = "/"
+  protected integrationPath?: string = "/"
+  protected integrationAction?: string = undefined
   protected requestTemplates: { [contentType: string]: string; } = {}
   protected successResponseTemplates: { [contentType: string]: string; } = {}
   protected failureResponseTemplates: { [contentType: string]: string; } = {}
@@ -70,6 +71,7 @@ export abstract class GenericRestApiAwsIntegration extends cdk.Construct {
 
     const awsIntegration = new apigateway.AwsIntegration({
       service: this.awsService,
+      action: this.integrationAction,
       path: this.integrationPath,
       options: {
         credentialsRole: this.integrationRole,

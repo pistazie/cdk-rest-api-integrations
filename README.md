@@ -66,4 +66,28 @@ After deploying your CDK stack you can publish messages to the SQS Queue via HTT
         --data-raw '{"cdk":"rocks"}'
 ```
 
+## How to use - Kinesis Stream
+
+Add a Kinesis Stream and a RestApi to your stack, integrate them using a **KinesisRestApiIntegration** construct:
+
+```javascript
+    // add the RestApi and Queue to be integrated with each other
+    const restApi = new apigateway.RestApi(this, 'myRestApi')
+    const myResource = restApi.root.addResource('myResource')
+    const stream = new kinesis.Stream(this, "myStream");
+
+    // add the integration
+    new SqsRestApiIntegration(this, 'mySqsIntegration', {
+            stream: stream,
+            restApiResource: myResource
+    })
+```
+
+After deploying your CDK stack you can publish messages to the SQS Queue via HTTP:
+```bash
+    $ curl -X POST https://xxxxxxxx.execute-api.eu-central-1.amazonaws.com/prod/myResource \
+        --header 'Content-Type: application/json' \
+        --data-raw '{"cdk":"rocks"}'
+```
+
  
