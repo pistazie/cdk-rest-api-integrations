@@ -1,0 +1,302 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot test: Kinesis integration as expected 1`] = `
+Object {
+  "Conditions": Object {
+    "AwsCdkKinesisEncryptedStreamsUnsupportedRegions": Object {
+      "Fn::Or": Array [
+        Object {
+          "Fn::Equals": Array [
+            Object {
+              "Ref": "AWS::Region",
+            },
+            "cn-north-1",
+          ],
+        },
+        Object {
+          "Fn::Equals": Array [
+            Object {
+              "Ref": "AWS::Region",
+            },
+            "cn-northwest-1",
+          ],
+        },
+      ],
+    },
+  },
+  "Outputs": Object {
+    "testRestApiEndpointA2F50208": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "https://",
+            Object {
+              "Ref": "testRestApi5A6FA7A3",
+            },
+            ".execute-api.",
+            Object {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            Object {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            Object {
+              "Ref": "testRestApiDeploymentStageprod5AB21DDE",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
+  "Resources": Object {
+    "testIntegrationtestIntegrationkinesisintegrationrole6E377ED1": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testIntegrationtestIntegrationkinesisintegrationroleDefaultPolicyFA24CC1B": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kinesis:ListShards",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "testStream8BCA7523",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testIntegrationtestIntegrationkinesisintegrationroleDefaultPolicyFA24CC1B",
+        "Roles": Array [
+          Object {
+            "Ref": "testIntegrationtestIntegrationkinesisintegrationrole6E377ED1",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testRestApi5A6FA7A3": Object {
+      "Properties": Object {
+        "Name": "testRestApi",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "testRestApiAccount78640F48": Object {
+      "DependsOn": Array [
+        "testRestApi5A6FA7A3",
+      ],
+      "Properties": Object {
+        "CloudWatchRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "testRestApiCloudWatchRole995562DC",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+    },
+    "testRestApiCloudWatchRole995562DC": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testRestApiDeployment1ED9BE2E3f4f7fb0086c4d79c7c3d1d66fa2cce3": Object {
+      "DependsOn": Array [
+        "testRestApitestResourcePOST4F369133",
+        "testRestApitestResourceD4EBD8FD",
+      ],
+      "Properties": Object {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": Object {
+          "Ref": "testRestApi5A6FA7A3",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "testRestApiDeploymentStageprod5AB21DDE": Object {
+      "Properties": Object {
+        "DeploymentId": Object {
+          "Ref": "testRestApiDeployment1ED9BE2E3f4f7fb0086c4d79c7c3d1d66fa2cce3",
+        },
+        "RestApiId": Object {
+          "Ref": "testRestApi5A6FA7A3",
+        },
+        "StageName": "prod",
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "testRestApitestResourceD4EBD8FD": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "testRestApi5A6FA7A3",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "testResource",
+        "RestApiId": Object {
+          "Ref": "testRestApi5A6FA7A3",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "testRestApitestResourcePOST4F369133": Object {
+      "Properties": Object {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "POST",
+        "Integration": Object {
+          "Credentials": Object {
+            "Fn::GetAtt": Array [
+              "testIntegrationtestIntegrationkinesisintegrationrole6E377ED1",
+              "Arn",
+            ],
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": Array [
+            Object {
+              "ResponseTemplates": Object {
+                "application/json": "{\\"status\\":\\"failed to process message\\")}",
+              },
+              "SelectionPattern": "",
+              "StatusCode": "503",
+            },
+            Object {
+              "ResponseTemplates": Object {
+                "application/json": "{\\"status\\":\\"message received\\", \\"messageId\\": $input.json('SequenceNumber')}",
+              },
+              "SelectionPattern": "200",
+              "StatusCode": "200",
+            },
+          ],
+          "PassthroughBehavior": "NEVER",
+          "RequestParameters": Object {
+            "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'",
+          },
+          "RequestTemplates": Object {
+            "application/json": Object {
+              "Fn::Join": Array [
+                "",
+                Array [
+                  "{\\"StreamName\\":\\"",
+                  Object {
+                    "Ref": "testStream8BCA7523",
+                  },
+                  "\\",\\"Data\\":\\"$util.base64Encode($input.body)\\",\\"PartitionKey\\":\\"$context.requestId\\"}",
+                ],
+              ],
+            },
+          },
+          "Type": "AWS",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":kinesis:action/PutRecord",
+              ],
+            ],
+          },
+        },
+        "MethodResponses": Array [
+          Object {
+            "ResponseModels": Object {
+              "application/json": "Empty",
+            },
+            "StatusCode": "503",
+          },
+          Object {
+            "ResponseModels": Object {
+              "application/json": "Empty",
+            },
+            "StatusCode": "200",
+          },
+        ],
+        "ResourceId": Object {
+          "Ref": "testRestApitestResourceD4EBD8FD",
+        },
+        "RestApiId": Object {
+          "Ref": "testRestApi5A6FA7A3",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "testStream8BCA7523": Object {
+      "Properties": Object {
+        "RetentionPeriodHours": 24,
+        "ShardCount": 1,
+        "StreamEncryption": Object {
+          "Fn::If": Array [
+            "AwsCdkKinesisEncryptedStreamsUnsupportedRegions",
+            Object {
+              "Ref": "AWS::NoValue",
+            },
+            Object {
+              "EncryptionType": "KMS",
+              "KeyId": "alias/aws/kinesis",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Kinesis::Stream",
+    },
+  },
+}
+`;
