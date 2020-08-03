@@ -1,7 +1,7 @@
 {
   "name": "cdk-rest-api-integrations",
   "description": "This CDK constructs library integrates AWS RestApi (a.k.a ApiGateway) with other AWS Services",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "keywords": [
     "cdk",
     "apigateway",
@@ -25,25 +25,25 @@
     "test": "jest --collectCoverage"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.54.0",
+    "@aws-cdk/assert": "1.40.0",
     "@types/jest": "^24.0.22",
     "@types/node": "10.17.5",
     "@typescript-eslint/eslint-plugin": "^3.5.0",
     "@typescript-eslint/parser": "^3.5.0",
-    "eslint": "^7.4.0",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.1.0",
+    "eslint": "^7.6.0",
+    "jest": "^26.2.2",
+    "ts-jest": "^26.1.4",
     "typescript": "^3.9.6"
   },
   "peerDependencies": {
-    "@aws-cdk/core": "1.54.0"
+    "@aws-cdk/core": "^1.40.0"
   },
   "dependencies": {
-    "@aws-cdk/aws-apigateway": "1.54.0",
-    "@aws-cdk/aws-iam": "1.54.0",
-    "@aws-cdk/aws-kinesis": "1.54.0",
-    "@aws-cdk/aws-sns": "1.54.0",
-    "@aws-cdk/aws-sqs": "1.54.0",
-    "@aws-cdk/core": "1.54.0"
+    "@aws-cdk/aws-apigateway": "1.40.0",
+    "@aws-cdk/aws-iam": "1.40.0",
+    "@aws-cdk/aws-kinesis": "1.40.0",
+    "@aws-cdk/aws-sns": "1.40.0",
+    "@aws-cdk/aws-sqs": "1.40.0",
+    "@aws-cdk/core": "1.40.0"
   }
 }
