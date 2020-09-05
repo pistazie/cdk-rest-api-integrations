@@ -90,4 +90,35 @@ After deploying your CDK stack you can publish messages to the SQS Queue via HTT
         --data-raw '{"cdk":"rocks"}'
 ```
 
+## How to use - Step Functions State Machine
+
+Add a Step Functions StateMachine and a RestApi to your stack, integrate them using a **KinesisRestApiIntegration** construct:
+
+```javascript
+    // add the RestApi 
+    const restApi = new apigateway.RestApi(this, 'myRestApi')
+    const myResource = restApi.root.addResource('myResource')
+
+    // add a Step Functions StateMachine
+    const stateMachine = new sfn.StateMachine(this, 'StateMachine', {
+          definition: new sfn.Wait(this, 'Wait X Seconds', {
+            time: sfn.WaitTime.secondsPath('$.waitSeconds'),
+          }),
+          timeout: Duration.minutes(5)
+    })
+
+    //add the integration
+    new StepFunctionsRestApiIntegration(this, 'myStepFunctionsIntegration', {
+           stateMachine : stateMachine,
+           restApiResource: myResource
+    })
+```
+
+After deploying your CDK stack you can start an execution via HTTP:
+```bash
+    $ curl -X POST https://xxxxxxxx.execute-api.eu-central-1.amazonaws.com/prod/myResource \
+        --header 'Content-Type: application/json' \
+        --data-raw '{"waitSeconds": 4}'
+```
+
  

@@ -1,7 +1,7 @@
 {
   "name": "cdk-rest-api-integrations",
   "description": "This CDK constructs library integrates AWS RestApi (a.k.a ApiGateway) with other AWS Services",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "keywords": [
     "cdk",
     "apigateway",
@@ -41,7 +41,8 @@
     "@aws-cdk/aws-iam": "^1.40.0",
     "@aws-cdk/aws-kinesis": "^1.40.0",
     "@aws-cdk/aws-sns": "^1.40.0",
-    "@aws-cdk/aws-sqs": "^1.40.0"
+    "@aws-cdk/aws-sqs": "^1.40.0",
+    "@aws-cdk/aws-stepfunctions": "^1.40.0"
   },
   "dependencies": {
     "@aws-cdk/aws-apigateway": "^1.40.0",
@@ -49,6 +50,7 @@
     "@aws-cdk/aws-kinesis": "^1.40.0",
     "@aws-cdk/aws-sns": "^1.40.0",
     "@aws-cdk/aws-sqs": "^1.40.0",
+    "@aws-cdk/aws-stepfunctions": "^1.40.0",
     "@aws-cdk/core": "^1.40.0"
   }
 }
