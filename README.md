@@ -92,7 +92,7 @@ After deploying your CDK stack you can publish messages to the SQS Queue via HTT
 
 ## How to use - Step Functions State Machine
 
-Add a Step Functions StateMachine and a RestApi to your stack, integrate them using a **KinesisRestApiIntegration** construct:
+Add a Step Functions StateMachine and a RestApi to your stack, integrate them using a **StepFunctionsRestApiIntegration** construct:
 
 ```javascript
     // add the RestApi 
