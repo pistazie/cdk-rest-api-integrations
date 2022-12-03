@@ -1,3 +1,7 @@
+> **Deprecated!**
+> This repo is not compatible with CDK V2 and the improvements made to CDK's API Gateway integrations make it rather redundent so I don't plan to update the construct.
+
+
 ![Test](https://github.com/pistazie/cdk-rest-api-integrations/workflows/Test/badge.svg)
 [![npm version](https://badge.fury.io/js/cdk-rest-api-integrations.svg)](https://badge.fury.io/js/cdk-rest-api-integrations)
 
